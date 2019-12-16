@@ -4,18 +4,69 @@ namespace RPG
 {
     class Game
     {
+        private static Random rnd = new Random();
+        static Player Battle(Player w)
+        {
+            while (w.HP > 0 && w.Opponent.HP > 0)
+            {
+                int AtkOrUseSkill1 = rnd.Next(0, 1);
+                int AtkOrUseSkill2 = rnd.Next(0, 1);
+                if (AtkOrUseSkill1 == 0)
+                {
+                    w.Attack();
+                }
+                else if (AtkOrUseSkill1 == 1)
+                {
+                    w.UseSkill();
+                }
+                if (AtkOrUseSkill2 == 0)
+                {
+                    w.Opponent.Attack();
+                }
+                else if (AtkOrUseSkill2 == 1)
+                {
+                    w.Opponent.UseSkill();
+                }
+            }
+            if (w.HP < 1)
+            {
+                Logger.LogText($"({w.Class}) {w.Name} погиб!\n");
+                w.Opponent.HP = rnd.Next(1, 100);
+                return w;
+            }
+            else if (w.Opponent.HP < 1)
+            {
+                Logger.LogText($"({w.Opponent.Class}) {w.Opponent.Name} погиб!\n");
+                w.HP = rnd.Next(1, 100);
+                return w.Opponent;
+            }
+            throw new Exception("Fatal error");
+
+        }
+        static void PickOp(List<Player> players)
+        {
+            int i = 1;
+            while (players.Count > i)
+            {
+                players[i - 1].Opponent = players[i];
+                players[i].Opponent = players[i - 1];
+                i += 2;
+            }
+        }
         static void Main(string[] args)
         {
             string[] names = { "WhiteCat", "Vaxei", "Alumetri", "idke", "Micca", "FlyingTuna", "Karthy", "RyuK", "Varvalian",
                                 "Mathi", "FGSky", "fieryrage", "firebat92", "chocomint", "Abyssal", "Aireu"};
             Console.Write($"Введите кол-во игроков(1-16):");
             int n = Convert.ToInt32(Console.ReadLine());
-            Random rnd = new Random();
+            if(n%2!=0)
+            {
+                throw new Exception("Wrong count players");
+            }
             List<Player> players = new List<Player>();
-            int kon = 1;
-            
             int i = 1;
             int k = 0;
+            int kon = 1;
             while (players.Count < n)
             {
                 int c1 = rnd.Next(0, 2);
@@ -51,46 +102,34 @@ namespace RPG
                 players[i].Opponent = players[i - 1];
                 i += 2;
             }
-            
-            while (true)
+
+            while(players.Count > 1)
             {
-                int w = rnd.Next(0, players.Count - 1);
-                while (players[w].HP > 0 && players[w].Opponent.HP > 0)
+                Logger.LogText($"{kon}-й Кон\n");
+                while (true)
                 {
-                    int AtkOrUseSkill1 = rnd.Next(0, 1);
-                    int AtkOrUseSkill2 = rnd.Next(0, 1);
-                    if (AtkOrUseSkill1 == 0)
+                    int randomplayer = rnd.Next(0, players.Count - 1);
+                    if (players[randomplayer].Opponent == null)
                     {
-                        players[w].Attack();
+                        randomplayer = rnd.Next(0, players.Count - 1);
                     }
-                    else if (AtkOrUseSkill1 == 1)
+                    else
                     {
-                        players[w].UseSkill();
+                        
+                        Player tempPlayer = Battle(players[randomplayer]);
+                        players[players.IndexOf(tempPlayer)].Opponent.Opponent = null;
+                        players[players.IndexOf(tempPlayer)].Opponent = null;
+                        players.Remove(tempPlayer);
                     }
-                    if (AtkOrUseSkill2 == 0)
+                    if(players.Count == 1 || (players[0].Opponent==null && players[1].Opponent == null))
                     {
-                        players[w].Opponent.Attack();
-                    }
-                    else if (AtkOrUseSkill2 == 1)
-                    {
-                        players[w].Opponent.UseSkill();
+                        break;
                     }
                 }
-                if (players[w].HP < 1)
-                {
-                    Logger.LogText($"{players[w].Class} {players[w].Name} погиб!");
-                    players.Remove(players[w]);
-                    players[w].Opponent.HP = rnd.Next(1, 100);
-                    kon++;
-                }
-                else if (players[w].Opponent.HP < 1)
-                {
-                    Logger.LogText($"{players[w].Opponent.Class} {players[w].Opponent.Name} погиб!");
-                    players.Remove(players[w].Opponent);
-                    players[w].HP = rnd.Next(1, 100);
-                    kon++;
-                }
+                PickOp(players);
+                kon++;
             }
+            Logger.LogText($"({players[0].Class}) {players[0].Name} WINNER!!!");
         }
     }
 }
