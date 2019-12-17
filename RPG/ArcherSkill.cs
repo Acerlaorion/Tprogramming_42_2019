@@ -8,8 +8,16 @@ namespace RPG
     {
         public void UseSkill(Player user)
         {
-            user.Opponent.IsDebuffed = true;
-            Logger.LogText($"({user.Class}) {user.Name} использует (Огненные стрелы) на ({user.Opponent.Class}) {user.Opponent.Name}.");
+            if (!user.SkillUsed)
+            {
+                user.Opponent.IsDebuffed = true;
+                Logger.LogText($"({user.Class}) {user.Name} использует (Огненные стрелы) на ({user.Opponent.Class}) {user.Opponent.Name}.");
+                user.SkillUsed = true;
+            }
+            else
+            {
+                user.Attack();
+            }
         }
     }
 }
