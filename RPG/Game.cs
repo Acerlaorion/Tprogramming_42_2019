@@ -10,17 +10,19 @@ namespace RPG
                                 "Mathi", "FGSky", "fieryrage", "firebat92", "chocomint", "Abyssal", "Aireu"};
             Console.Write($"Введите кол-во игроков(1-16):");
             int n = Convert.ToInt32(Console.ReadLine());
+            if (n % 2 != 0 || n <= 0)
+            {
+                throw new Exception("Wrong count players");
+            }
             Random rnd = new Random();
             List<Player> players = new List<Player>();
-            int kon = 1;
-            
-            int i = 1;
+            List<Player> winners = new List<Player>();
             int k = 0;
+            int kon = 1;
             while (players.Count < n)
             {
-                int c1 = rnd.Next(0, 2);
-                int c2 = rnd.Next(0, 2);
-                while (c1 == c2) c2 = rnd.Next(0, 2);
+                int c1 = rnd.Next(0, 3);
+                int c2 = rnd.Next(0, 3);
                 if (c1 == 0)
                 {
                     players.Add(new Knight(names[k]));
@@ -47,50 +49,28 @@ namespace RPG
                     players.Add(new Mage(names[k]));
                 }
                 k++;
-                players[i-1].Opponent = players[i];
-                players[i].Opponent = players[i - 1];
-                i += 2;
             }
-            
-            while (true)
+            Logger.LogText($"{kon++}-й Кон\n");
+            while (players.Count + winners.Count > 1)
             {
-                int w = rnd.Next(0, players.Count - 1);
-                while (players[w].HP > 0 && players[w].Opponent.HP > 0)
+                if (players.Count > 1 && !(players.Count < 2))
                 {
-                    int AtkOrUseSkill1 = rnd.Next(0, 1);
-                    int AtkOrUseSkill2 = rnd.Next(0, 1);
-                    if (AtkOrUseSkill1 == 0)
-                    {
-                        players[w].Attack();
-                    }
-                    else if (AtkOrUseSkill1 == 1)
-                    {
-                        players[w].UseSkill();
-                    }
-                    if (AtkOrUseSkill2 == 0)
-                    {
-                        players[w].Opponent.Attack();
-                    }
-                    else if (AtkOrUseSkill2 == 1)
-                    {
-                        players[w].Opponent.UseSkill();
-                    }
+                    Player tempPlayer = ClassBattle.Battle(players[PickPlayers.PickOp(players)]);
+                    winners.Add(tempPlayer.Opponent);
+                    players.Remove(tempPlayer.Opponent);
+                    players[players.IndexOf(tempPlayer)].Opponent.Opponent = null;
+                    players.Remove(tempPlayer);
                 }
-                if (players[w].HP < 1)
+                else
                 {
-                    Logger.LogText($"{players[w].Class} {players[w].Name} погиб!");
-                    players.Remove(players[w]);
-                    players[w].Opponent.HP = rnd.Next(1, 100);
-                    kon++;
-                }
-                else if (players[w].Opponent.HP < 1)
-                {
-                    Logger.LogText($"{players[w].Opponent.Class} {players[w].Opponent.Name} погиб!");
-                    players.Remove(players[w].Opponent);
-                    players[w].HP = rnd.Next(1, 100);
+                    Logger.LogText($"{kon}-й Кон\n");
+                    players.AddRange(winners);
+                    winners.Clear();
                     kon++;
                 }
             }
+            Logger.LogText($"({winners[0].Class}) {winners[0].Name} WINNER!!!");
+            Console.ReadLine();
         }
     }
 }

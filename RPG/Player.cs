@@ -28,6 +28,7 @@ namespace RPG
         public int Strength { get; } = rnd.Next(1, 99);
         public bool IsDebuffed { get; set; } = false;
         public bool IsSkipped { get; set; } = false;
+        public bool SkillUsed { get; set; } = false;
         internal IUseSkill Usingskill { get; set; }
 
         public void Skip()
@@ -54,6 +55,7 @@ namespace RPG
             else
             {
                 Logger.LogText($"({Class}) {Name} пропускает ход.");
+                IsSkipped = false;
             }
         }
         public void UseSkill()
@@ -74,6 +76,7 @@ namespace RPG
             else
             {
                 Logger.LogText($"({Class}) {Name} пропускает ход.");
+                IsSkipped = false;
             }
             
         }

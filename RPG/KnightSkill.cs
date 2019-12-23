@@ -9,7 +9,7 @@ namespace RPG
         public void UseSkill(Player user)
         {
             user.Opponent.HP -= user.Strength * 1.3;
-            Logger.LogText($"({user.Class}) {user.Name} использует (Удар возмездия) и наносит урон {user.Strength} противнику ({user.Opponent.Class}){user.Opponent.Name}.");
+            Logger.LogText($"({user.Class}) {user.Name} использует (Удар возмездия) и наносит урон {user.Strength * 1.3} противнику ({user.Opponent.Class}){user.Opponent.Name}.");
         }
     }
 }
