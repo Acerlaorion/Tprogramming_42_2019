@@ -17,12 +17,6 @@ namespace CourseApp
             return result;
         }
 
-        public static string Age(int days, int months, int years)
-        {
-            DateTime result = DateCompare(new DateTime(years, months, days), DateTime.Now);
-            return $"Вам {result.Year - 1} лет, {result.Month - 1} месяцев и {result.Day - 1} дня";
-        }
-
         public static DateTime DateCompare(DateTime date1, DateTime date2)
         {
             if (date1.Ticks < date2.Ticks)
@@ -34,16 +28,15 @@ namespace CourseApp
             throw new Exception();
         }
 
-        public static string Age(DateTime date, DateTime date2)
+        public static string Age(DateTime fromDate, DateTime toDate)
         {
-            var dateCompar = DateCompare(date, date2);
+            var dateCompar = DateCompare(fromDate, toDate);
             return $"Вам {dateCompar.Year - 1} лет, {dateCompar.Month - 1} месяцев и {dateCompar.Day - 1} дня";
         }
 
         public static string Age(DateTime date)
         {
-            var dateCompar = DateCompare(date, DateTime.Now);
-            return $"Вам {dateCompar.Year - 1} лет, {dateCompar.Month - 1} месяцев и {dateCompar.Day - 1} дня";
+            return Age(date, DateTime.Now);
         }
     }
 }
