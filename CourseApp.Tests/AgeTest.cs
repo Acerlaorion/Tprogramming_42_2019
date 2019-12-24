@@ -17,16 +17,24 @@ namespace CourseApp.Tests
         }
 
         [Fact]
-        public void TodayBirthdayTest()
+        public void TestAgeVchera()
         {
-            try
-            {
-                Assert.Equal(0, DateTime.Compare(DateTime.Now, AgeClass.DateCompare(DateTime.Now, DateTime.Now)));
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Birthday == Today");
-            }
+            string st = $"Вам 10 лет, 0 месяцев и 1 дня";
+            Assert.Equal(st, AgeClass.Age(new DateTime(2009, 12, 20), new DateTime(2019, 12, 21)));
+        }
+
+        [Fact]
+        public void TestAgeToday()
+        {
+            string st = $"Вам 8 лет, 0 месяцев и 0 дня";
+            Assert.Equal(st, AgeClass.Age(new DateTime(2011, 12, 21), new DateTime(2019, 12, 21)));
+        }
+
+        [Fact]
+        public void TestAgeTommorow()
+        {
+            string st = $"Вам 10 лет, 0 месяцев и 0 дня";
+            Assert.Equal(st, AgeClass.Age(new DateTime(2009, 12, 21), new DateTime(2019, 12, 21)));
         }
 
         [Fact]
@@ -34,7 +42,7 @@ namespace CourseApp.Tests
         {
             try
             {
-                Assert.Equal(0, DateTime.Compare(DateTime.Now, AgeClass.DateCompare(DateTime.Now, new DateTime(2048, 8, 16))));
+                Assert.Equal(0, DateTime.Compare(DateTime.Now, AgeClass.DateCompare(new DateTime(2019, 12, 21), new DateTime(2048, 8, 16))));
             }
             catch (Exception)
             {
