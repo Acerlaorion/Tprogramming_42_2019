@@ -38,6 +38,13 @@ namespace CourseApp.Tests
         }
 
         [Fact]
+        public void TestAge()
+        {
+            string st = $"Вам 13 лет, 11 месяцев и 22 дня";
+            Assert.Equal(st, AgeClass.Age(new DateTime(2000, 11, 20), new DateTime(2014, 11, 11)));
+        }
+
+        [Fact]
         public void BirthdayAboveToday()
         {
             try
