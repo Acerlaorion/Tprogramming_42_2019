@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RPG
 {
-    interface IUseSkill
+    public interface IUseSkill
     {
         void UseSkill(Player user);
     }

@@ -17,8 +17,8 @@ namespace RPG
         public Knight(string name, Player opponent)
         :base(name, opponent)
         {
+            Skills.Add(new KnightSkill());
             Class = "Knight";
-            Usingskill = new KnightSkill();
         }
         
     }

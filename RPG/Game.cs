@@ -8,11 +8,23 @@ namespace RPG
         {
             string[] names = { "WhiteCat", "Vaxei", "Alumetri", "idke", "Micca", "FlyingTuna", "Karthy", "RyuK", "Varvalian",
                                 "Mathi", "FGSky", "fieryrage", "firebat92", "chocomint", "Abyssal", "Aireu"};
-            Console.Write($"Введите кол-во игроков(1-16):");
-            int n = Convert.ToInt32(Console.ReadLine());
-            if (n % 2 != 0 || n <= 0)
+            int n = 0;
+            try
             {
-                throw new Exception("Wrong count players");
+                Console.Write($"Введите кол-во игроков(1-16):");
+                string nString = Console.ReadLine();
+                n = Convert.ToInt32(nString);
+            }
+            catch (System.FormatException)
+            {
+                Console.Write($"Введите кол-во игроков(1-16):");
+                string nString = Console.ReadLine();
+                n = Convert.ToInt32(nString);
+            }
+            while (n % 2 != 0 || n <= 0)
+            {
+                Console.Write($"Введите кол-во игроков(1-16):");
+                n = Convert.ToInt32(Console.ReadLine());
             }
             Random rnd = new Random();
             List<Player> players = new List<Player>();
@@ -22,31 +34,17 @@ namespace RPG
             while (players.Count < n)
             {
                 int c1 = rnd.Next(0, 3);
-                int c2 = rnd.Next(0, 3);
-                if (c1 == 0)
+                switch (c1)
                 {
-                    players.Add(new Knight(names[k]));
-                }
-                if (c1 == 1)
-                {
-                    players.Add(new Archer(names[k]));
-                }
-                if (c1 == 2)
-                {
-                    players.Add(new Mage(names[k]));
-                }
-                k++;
-                if (c2 == 0)
-                {
-                    players.Add(new Knight(names[k]));
-                }
-                if (c2 == 1)
-                {
-                    players.Add(new Archer(names[k]));
-                }
-                if (c2 == 2)
-                {
-                    players.Add(new Mage(names[k]));
+                    case 0:
+                        players.Add(new Knight(names[k]));
+                        break;
+                    case 1:
+                        players.Add(new Archer(names[k]));
+                        break;
+                    case 2:
+                        players.Add(new Mage(names[k]));
+                        break;
                 }
                 k++;
             }
@@ -70,7 +68,6 @@ namespace RPG
                 }
             }
             Logger.LogText($"({winners[0].Class}) {winners[0].Name} WINNER!!!");
-            Console.ReadLine();
         }
     }
 }

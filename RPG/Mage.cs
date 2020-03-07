@@ -18,7 +18,7 @@ namespace RPG
         : base(name, opponent)
         {
             Class = "Mage";
-            Usingskill = new MageSkill();
+            Skills.Add(new MageSkill());
         }
         
     }

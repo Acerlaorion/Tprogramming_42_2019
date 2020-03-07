@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -20,49 +21,24 @@ namespace RPG
         {
             Name = name;
             Opponent = opponent;
+            Skills.Add(new Attack());
         }
         public string Class { get; protected set; }
         public string Name { get; set; }
         public Player Opponent { get; set; } = null;
         public double HP { get; set; } = rnd.Next(1, 100);
         public int Strength { get; } = rnd.Next(1, 99);
-        public bool IsDebuffed { get; set; } = false;
-        public bool IsSkipped { get; set; } = false;
-        public bool SkillUsed { get; set; } = false;
-        internal IUseSkill Usingskill { get; set; }
+        public IUseSkill Usingskill { get; set; }
 
-        public void Skip()
-        {
+        public List<IUseSkill> Skills = new List<IUseSkill>();
 
-        }
-        public virtual void Attack()
-        {
-            if (!IsSkipped)
-            {
-                if (!IsDebuffed)
-                {
-                    Opponent.HP -= Strength;
-                    Logger.LogText($"({Class}) {Name} наносит урон {Strength} противнику ({Opponent.Class}) {Opponent.Name}.");
-                }
-                else
-                {
-                    HP -= 2;
-                    Logger.LogText($"({Class}) {Name} получает урон 2 от (Огненные стрелы).");
-                    Opponent.HP -= Strength;
-                    Logger.LogText($"({Class}) {Name} наносит урон {Strength} противнику ({Opponent.Class}) {Opponent.Name}.");
-                }
-            }
-            else
-            {
-                Logger.LogText($"({Class}) {Name} пропускает ход.");
-                IsSkipped = false;
-            }
-        }
+        public List<string> Effects = new List<string>();
+        
         public void UseSkill()
         {
-            if (!IsSkipped)
+            if (!Effects.Any(item => item == "Заворожение"))
             {
-                if (!IsDebuffed)
+                if (!Effects.Any(item => item == "Огненные стрелы"))
                 {
                     Usingskill.UseSkill(this);
                 }
@@ -76,9 +52,9 @@ namespace RPG
             else
             {
                 Logger.LogText($"({Class}) {Name} пропускает ход.");
-                IsSkipped = false;
+                Effects.Remove("Заворожение");
             }
-            
+
         }
     }
 }
