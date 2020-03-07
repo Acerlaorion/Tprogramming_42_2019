@@ -11,14 +11,14 @@ namespace RPG
             Random rnd = new Random();
             while (w.HP > 0 && w.Opponent.HP > 0)
             {
-                int RandomSkill1 = rnd.Next(0, w.Skills.Count - 1);
-                int RandomSkill2 = rnd.Next(0, w.Opponent.Skills.Count - 1);
-                if (RandomSkill1 == 0 && w.HP > 0)
+                int RandomSkill1 = rnd.Next(0, w.Skills.Count);
+                int RandomSkill2 = rnd.Next(0, w.Opponent.Skills.Count);
+                if (w.HP > 0)
                 {
                     w.Usingskill = w.Skills[RandomSkill1];
                     w.UseSkill();
                 }
-                if (RandomSkill2 == 0 && w.Opponent.HP > 0)
+                if (w.Opponent.HP > 0)
                 {
                     w.Opponent.Usingskill = w.Opponent.Skills[RandomSkill2];
                     w.Opponent.UseSkill();
