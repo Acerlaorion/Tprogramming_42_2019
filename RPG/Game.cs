@@ -51,7 +51,7 @@ namespace RPG
             Logger.LogText($"{kon++}-й Кон\n");
             while (players.Count + winners.Count > 1)
             {
-                if (players.Count > 1 && !(players.Count < 2))
+                if (players.Count >=2)
                 {
                     Player tempPlayer = ClassBattle.Battle(players[PickPlayers.PickOp(players)]);
                     winners.Add(tempPlayer.Opponent);

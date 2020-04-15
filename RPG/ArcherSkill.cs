@@ -11,7 +11,7 @@ namespace RPG
         {
             if (TimesUsedSkill < 1)
             {
-                user.Opponent.Effects.Add("Огненные стрелы");
+                user.Opponent.Effects.Add(new FireArrow());
                 Logger.LogText($"({user.Class}) {user.Name} использует (Огненные стрелы) на ({user.Opponent.Class}) {user.Opponent.Name}.");
                 TimesUsedSkill++;
             }

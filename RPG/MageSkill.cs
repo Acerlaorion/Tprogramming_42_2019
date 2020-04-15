@@ -9,8 +9,9 @@ namespace RPG
     {
         public void UseSkill(Player user)
         {
-            user.Opponent.Effects.Add("Заворожение");
+            user.Opponent.Effects.Add(new Skip());
             Logger.LogText($"({user.Class}) {user.Name} использует (Заворожение) на ({user.Opponent.Class}) {user.Opponent.Name}.");
+            
         }
     }
 }
