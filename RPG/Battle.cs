@@ -44,9 +44,9 @@ namespace RPG
                         w.Opponent.isStunned = false;
                         for (int i = 0; i < w.Effects.Count; i++)
                         {
-                            if (w.Effects[i] is Skip)
+                            if (w.Opponent.Effects[i] is Skip)
                             {
-                                w.Effects.RemoveAt(i);
+                                w.Opponent.Effects.RemoveAt(i);
                                 i--;
                             }
                         }
